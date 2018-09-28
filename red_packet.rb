@@ -33,7 +33,7 @@ end
 
 
 
-def generateMoneyVector(mon, pics)
+def generate_money_vector(mon, pics)
 	if mon < pics * 0.01
 		puts "金额不足"  
 	else

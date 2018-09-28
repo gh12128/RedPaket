@@ -52,7 +52,30 @@ def generateMoneyVector(mon, pics)
 		end
 		valueVec << (mon - valueVec.reduce(&:+)).round(2)
 		return valueVec
-    end
+    	end
+end
+
+def generate_money_vector_int(mon_int, pics)
+	mon = mon_int.to_f * 0.01
+	if mon < pics * 0.01
+		return ["花粉数量不足"]
+	else
+		return [mon] if pics == 1
+		valueVec = []
+		moneyLeft = (mon - pics * 0.01)
+		0.upto(pics-2) do |i|
+			mu = moneyLeft / (pics - i)
+		    sigma = mu / 2
+		    rg = RandomGaussian.new(mu,sigma)
+		    noiseValue = rg.rand.round(2)
+		    noiseValue = 0 if noiseValue < 0
+		    noiseValue = moneyLeft if noiseValue > moneyLeft
+		    valueVec << ((noiseValue + 0.01).round(2) * 100).round(0)
+		    moneyLeft -= noiseValue
+		end
+		valueVec << (mon * 100 - valueVec.reduce(&:+)).round(0)
+		return valueVec
+	end
 end
 
 
